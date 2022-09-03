@@ -11,23 +11,23 @@
 
         <meta name="author" content="YoriFang" />
 
-        <meta name="description" content="今天是2022年9月3日，星期六，天气小雨。 之前的博客站点由于个人的原因很长一段时间没有更新了，刚参加工作的时候单身的时候时 …
+        <meta name="description" content="前言 自从Neovim和Vim分道扬镳之后，Neovim开始原生支持Lua语言插件并内置了LSP Client，使用体验变的超棒！ 本文目的是记录和分享一个全功能的Neovim配置，这个配置几乎可以开箱直用，可以作为程序 …
 " />
         <meta property="og:type" content="article" />
         <meta name="twitter:card" content="summary">
 
-<meta name="keywords" content=", misc, " />
+<meta name="keywords" content=", productivity, " />
 
-<meta property="og:title" content="欢迎回来 "/>
-<meta property="og:url" content="https://kernel.love/wellcome-back.html" />
-<meta property="og:description" content="今天是2022年9月3日，星期六，天气小雨。 之前的博客站点由于个人的原因很长一段时间没有更新了，刚参加工作的时候单身的时候时 …" />
+<meta property="og:title" content="打造全功能Neovim IDE "/>
+<meta property="og:url" content="https://kernel.love/neovim-as-ide.html" />
+<meta property="og:description" content="前言 自从Neovim和Vim分道扬镳之后，Neovim开始原生支持Lua语言插件并内置了LSP Client，使用体验变的超棒！ 本文目的是记录和分享一个全功能的Neovim配置，这个配置几乎可以开箱直用，可以作为程序 …" />
 <meta property="og:site_name" content="kernel.love" />
 <meta property="og:article:author" content="YoriFang" />
-<meta property="og:article:published_time" content="2022-09-03T10:20:00+08:00" />
-<meta name="twitter:title" content="欢迎回来 ">
-<meta name="twitter:description" content="今天是2022年9月3日，星期六，天气小雨。 之前的博客站点由于个人的原因很长一段时间没有更新了，刚参加工作的时候单身的时候时 …">
+<meta property="og:article:published_time" content="2022-09-03T20:20:00+08:00" />
+<meta name="twitter:title" content="打造全功能Neovim IDE ">
+<meta name="twitter:description" content="前言 自从Neovim和Vim分道扬镳之后，Neovim开始原生支持Lua语言插件并内置了LSP Client，使用体验变的超棒！ 本文目的是记录和分享一个全功能的Neovim配置，这个配置几乎可以开箱直用，可以作为程序 …">
 
-        <title>欢迎回来  · kernel.love
+        <title>打造全功能Neovim IDE  · kernel.love
 </title>
 
 <script>
@@ -77,8 +77,8 @@
 <div class="row-fluid">
     <header class="page-header span10 offset2">
         <h1>
-            <a href="https://kernel.love/wellcome-back.html">
-                欢迎回来
+            <a href="https://kernel.love/neovim-as-ide.html">
+                打造全功能Neovim IDE
             </a>
         </h1>
     </header>
@@ -87,21 +87,47 @@
 <div class="row-fluid">
         <div class="span8 offset2 article-content">
             
-            <p>今天是2022年9月3日，星期六，天气小雨。</p>
-<p>之前的博客站点由于个人的原因很长一段时间没有更新了，刚参加工作的时候单身的时候时间还比较充裕。
-后来有了女朋友之后，花了很多时间互相陪伴，再加上换了工作之后工作强度和压力更大了所以更新的比较
-少了。让不少喜欢这个技术博客的小伙伴们比较失望，经常碰到小伙伴问我为啥最近没有更新了，
-这让我深感惭愧！</p>
-<p>所以今天重新收拾了一下博客，换了一个域名: <a href="https://kernel.love">https://kernel.love</a>，重新出发，加油！</p>
+            <p><img alt="image-20220903194739318" src="https://kernel.love/images/neovim-as-ide.jpg"></p>
+<h1>前言</h1>
+<p>自从Neovim和Vim分道扬镳之后，Neovim开始原生支持Lua语言插件并内置了LSP Client，使用体验变的超棒！</p>
+<p>本文目的是记录和分享一个全功能的Neovim配置，这个配置几乎可以开箱直用，可以作为程序员的成产力工具。</p>
+<h1>安装</h1>
+<p>首先你需要安装Neovim到你的操作系统上，建议版本在0.7以上。</p>
+<div class="highlight"><pre><span></span><code>nvim --version
+NVIM v0.7.2
+Build type: Release
+LuaJIT <span class="m">2</span>.1.0-beta3
+Compiled by builduser
+
+Features: +acl +iconv +tui
+See <span class="s2">&quot;:help feature-compile&quot;</span>
+
+   system vimrc file: <span class="s2">&quot;</span><span class="nv">$VIM</span><span class="s2">/sysinit.vim&quot;</span>
+  fall-back <span class="k">for</span> <span class="nv">$VIM</span>: <span class="s2">&quot;/usr/share/nvim&quot;</span>
+
+Run :checkhealth <span class="k">for</span> more info
+</code></pre></div>
+
+<p>安装好nvim之后，直接clone这个github仓库到本地的<code>./config</code>目录下即可：</p>
+<div class="highlight"><pre><span></span><code>git clone https://github.com/fangying/nvim.git ~/.config
+</code></pre></div>
+
+<p>克隆到本地之后，直接执行nvim命令，nvim会自动执行一下几个步骤完成初始化。</p>
+<ol>
+<li>自动调用curl下载Packer.nvim插件管理器；</li>
+<li>Packer插件管理器自动下载lua/plugins.lua中配置的插件；</li>
+<li>Packer插件管理器自动编译生产最终的配置文件。</li>
+</ol>
+<p>注意：下载安装nvim插件可能会失败或者重试，建议挂上梯子，安装提示重试基本上都能够一次性安装和初始化完成。</p>
 
 
              
  
                 <p id="post-share-links">
     Share on:
-      <a href="https://twitter.com/intent/tweet?text=%E6%AC%A2%E8%BF%8E%E5%9B%9E%E6%9D%A5&url=https%3A//kernel.love/wellcome-back.html" target="_blank" rel="nofollow noopener noreferrer" title="Share on Twitter">Twitter</a>
- ❄       <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A//kernel.love/wellcome-back.html" target="_blank" rel="nofollow noopener noreferrer" title="Share on Facebook">Facebook</a>
- ❄       <a href="mailto:?subject=%E6%AC%A2%E8%BF%8E%E5%9B%9E%E6%9D%A5&amp;body=https%3A//kernel.love/wellcome-back.html" target="_blank" rel="nofollow noopener noreferrer" title="Share via Email">Email</a>
+      <a href="https://twitter.com/intent/tweet?text=%E6%89%93%E9%80%A0%E5%85%A8%E5%8A%9F%E8%83%BDNeovim%20IDE&url=https%3A//kernel.love/neovim-as-ide.html" target="_blank" rel="nofollow noopener noreferrer" title="Share on Twitter">Twitter</a>
+ ❄       <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A//kernel.love/neovim-as-ide.html" target="_blank" rel="nofollow noopener noreferrer" title="Share on Facebook">Facebook</a>
+ ❄       <a href="mailto:?subject=%E6%89%93%E9%80%A0%E5%85%A8%E5%8A%9F%E8%83%BDNeovim%20IDE&amp;body=https%3A//kernel.love/neovim-as-ide.html" target="_blank" rel="nofollow noopener noreferrer" title="Share via Email">Email</a>
 
             
             
@@ -116,16 +142,16 @@
             <aside>
             <nav>
             <ul class="articles-timeline">
-                <li class="next-article"><a href="https://kernel.love/neovim-as-ide.html" title="Next: 打造全功能Neovim IDE">打造全功能Neovim IDE</a> »</li>
+                <li class="previous-article">« <a href="https://kernel.love/wellcome-back.html" title="Previous: 欢迎回来">欢迎回来</a></li>
             </ul>
             </nav>
             </aside>
         </div>
         <section id="article-sidebar" class="span2">
             <h4>Published</h4>
-            <time itemprop="dateCreated" datetime="2022-09-03T10:20:00+08:00">Sat 03 September 2022</time>
+            <time itemprop="dateCreated" datetime="2022-09-03T20:20:00+08:00">Sat 03 September 2022</time>
             <h4>Category</h4>
-            <a class="category-link" href="https://kernel.love/categories.html#misc-ref">misc</a>
+            <a class="category-link" href="https://kernel.love/categories.html#productivity-ref">productivity</a>
 <h4>Contact</h4>
 <div id="sidebar-social-link">
     <a href="https://github.com/fangying" title="" target="_blank" rel="nofollow noopener noreferrer">
