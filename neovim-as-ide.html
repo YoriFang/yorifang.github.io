@@ -133,23 +133,24 @@ git clone https://github.com/fangying/nvim.git ~/.config/nvim
 <ol>
 <li>自动调用curl下载Packer.nvim插件管理器；</li>
 <li>Packer插件管理器自动下载lua/plugins.lua中配置的插件；</li>
-<li>Packer插件管理器自动编译生产最终的配置文件。</li>
+<li>Packer插件管理器自动编译生成最终的配置文件。</li>
 </ol>
 <p><strong>注意</strong>：</p>
 <ul>
-<li>下载安装nvim插件可能会失败]建议挂上梯子，可能需要多次执行PackerSync才能完成安装和初始化。</li>
-<li>Tree-sitter这个插件安装和初始化可能时间会久一点，原因是它会编译和安装一堆语法高亮相关组件。</li>
-<li>初始化遇到问题根据nvim提示，仔细排查一般都能够顺利解决。</li>
+<li>下载安装nvim插件可能会失败，强烈建议挂上梯子，可能需要多次执行PackerSync命令才能完成初始化。</li>
+<li>Tree-sitter这个插件安装和初始化可能时间会久一点，原因是它会编译和安装一堆语言相关组件。</li>
+<li>初始化遇到问题不要慌，根据nvim提示仔细排查一般都能够顺利解决。</li>
+<li>初始化完成后，建议执行<code>checkhealth</code>命令，再次检查各插件的依赖是否都安装好了。</li>
 </ul>
 <p><img alt="NeovimSetup" src="../images/neovim-setup.gif"></p>
 <h1>3. 定制</h1>
-<p>这个仓库基于<a href="https://github.com/ofseed/nvim/">https://github.com/ofseed/nvim/</a>进行了一些优化，里面有不少私人定制的插件，可能需要根据个人习惯做一些修改。下面简要介绍一下这个超级配置里面的一些核心插件。</p>
+<p>这个仓库基于<a href="https://github.com/ofseed/nvim/">https://github.com/ofseed/nvim/</a>进行了一些优化，这是一个非常个性化的配置，可能需要根据个人习惯做一些修改。下面简要介绍一下这个超级配置里的一些核心插件。</p>
 <h3>alpha-nvim</h3>
 <p><img alt="alpha-nvim" src="../images/alpha-nvim.png"></p>
 <p>这个漂亮的启动界面是alpha-nvim插件提供的，你可以对该插件进行定制。</p>
 <h3>telescope.nvim</h3>
 <p><img alt="telescope.nvim" src="../images/telescope-nvim.gif"></p>
-<p>Telescope.nvim是一个超级插件，它可以为我们提供查找、过滤、预览、选择等功能。其本身还可以集成许多子插件，进一步可以实现项目管理、会话管理等功能。默认快捷键：</p>
+<p>Telescope.nvim是一个超级插件，它可以为我们提供查找、过滤、预览、选择等功能。其本身还可以集成许多子插件，进一步可以实现项目管理、会话管理等功能。Telescope的默认快捷键配置为：</p>
 <div class="highlight"><pre><span></span><code>&lt;leader&gt;ff 查找文件
 &lt;leader&gt;fg 查找符号
 &lt;leader&gt;fp 查找项目
@@ -161,7 +162,7 @@ git clone https://github.com/fangying/nvim.git ~/.config/nvim
 <p>Tree-sitter是一个语法增量解析器，基于它我们可以实现对代码的语法分析，做到更细粒度的代码高亮。此外它还可以跟LSP进行交互，提供更加丰富的功能。</p>
 <h3>Mason.nvim</h3>
 <p><img alt="mason-nvim" src="../images/mason-nvim.png"></p>
-<p>Mason是一个非常好用的LSP Server管理器，使用Mason我们可以非常方便地下载各种语言的LSP Server，不也用再挨个折腾安装LSP Server。目前常用的编程语言LSP Server基本上都已经在Mason中有了完备的支持。</p>
+<p>Mason是一个非常好用的LSP Server管理器，使用Mason我们可以非常方便地下载各种语言的LSP Server，有了它之后再也不用挨个去下载和安装LSP Server。目前常用的编程语言LSP Server在Mason中都有了完备的支持。</p>
 <h3>CodeCompletion</h3>
 <p><img alt="CodeCompletion" src="../images/code-completion.png"></p>
 <p>有了LSP Server的支持再加上Neovim自带LSP Client，Neovim拥有媲美VsCode般的代码补全和提示功能。</p>
@@ -172,7 +173,7 @@ git clone https://github.com/fangying/nvim.git ~/.config/nvim
 <p><img alt="Multi-Words-Highlight" src="../images/multi-words-highlight.png"></p>
 <h1>4. 扩展</h1>
 <p><img alt="Neovim-Plugins-Dir" src="../images/neovim-plugins-dir.png"></p>
-<p>如果需要进一步对上述配置进行扩展，可以阅读以下配置的核心代码。</p>
+<p>如果需要进一步对上述配置进行扩展，可以阅读一下该配置的核心代码。</p>
 <ul>
 <li>lua/plugins.lua 文件中定义了所有用到的插件集合；</li>
 <li>core文件夹是一些核心插件的独立配置项，可自行扩展；</li>
@@ -180,10 +181,11 @@ git clone https://github.com/fangying/nvim.git ~/.config/nvim
 <li>efficiency文件夹是一些效率相关插件的配置项，可自行扩展；</li>
 <li>language是一些LSP Server相关的配置项，可自行扩展；</li>
 </ul>
-<p>插件配置的入口文件是<code>lua/plugins.la</code>，每个插件可能有自己的特殊配置，这些都安装插件类型分别放到了相关的目录下面，可以根据自己的需求增加或调整部分插件的配置。</p>
+<p>插件配置的入口文件是<code>lua/plugins.la</code>，每个插件可以拥有自己的个性化配置，这些安装插件根据类型分类放到了不通的目录下面，可以根据自己的个性化需求调整部分插件的配置。</p>
 <h1>5. 其他</h1>
 <p>感谢Yi Ming的分享！</p>
-<p>还在等什么？赶紧开始捣鼓打造属于你自己的Neovim全功能IDE吧！</p>
+<p>亲，还在等什么？</p>
+<p>赶紧开始捣鼓打造属于你自己的Neovim全功能IDE吧！</p>
 
 
              
