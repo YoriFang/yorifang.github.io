@@ -95,6 +95,7 @@ Linux虚拟机通常能够在半虚拟化下工作的很好，因为内核本身
 为此KVM在x86上为Windows Guest实现了HyperV启迪（HyperV Enlightenment），
 这些特性会让Windows和HyperV的Guest认为他们运行在HyperV兼容的Hypervisor上，
 这样Guest就会自动开启一些半虚拟化的性能优化。</p>
+<p>翻译原文：<img alt="hyper-v enlightenment" src="https://www.qemu.org/docs/master/system/i386/hyperv.html"></p>
 <h3>设置HyperV启迪</h3>
 <p>默认情况下Qemu/KVM不会开启任何的HyperV启迪，qemu支持将单个的启迪特性通过cpu flags配置传入来尝试使能，例如：</p>
 <div class="highlight"><pre><span></span><code>qemu-system-x86_64 --enable-kvm --cpu host,hv_relaxed,hv_vpindex,hv_time, ...
