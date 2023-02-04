@@ -93,40 +93,40 @@
 <p>本文目的是记录和分享一个全功能的Neovim配置，这个配置几乎可以开箱即用，可作为程序员的成产力工具。</p>
 <h1>2. 安装</h1>
 <p>首先你需要安装Neovim到你的操作系统上，建议nvim版本在0.7以上。</p>
-<div class="highlight"><pre><span></span><code>nvim --version
-NVIM v0.7.2
-Build type: Release
-LuaJIT <span class="m">2</span>.1.0-beta3
-Compiled by builduser
+<div class="highlight"><pre><span></span><code>nvim<span class="w"> </span>--version
+NVIM<span class="w"> </span>v0.7.2
+Build<span class="w"> </span>type:<span class="w"> </span>Release
+LuaJIT<span class="w"> </span><span class="m">2</span>.1.0-beta3
+Compiled<span class="w"> </span>by<span class="w"> </span>builduser
 
-Features: +acl +iconv +tui
-See <span class="s2">&quot;:help feature-compile&quot;</span>
+Features:<span class="w"> </span>+acl<span class="w"> </span>+iconv<span class="w"> </span>+tui
+See<span class="w"> </span><span class="s2">&quot;:help feature-compile&quot;</span>
 
-   system vimrc file: <span class="s2">&quot;</span><span class="nv">$VIM</span><span class="s2">/sysinit.vim&quot;</span>
-  fall-back <span class="k">for</span> <span class="nv">$VIM</span>: <span class="s2">&quot;/usr/share/nvim&quot;</span>
+<span class="w">   </span>system<span class="w"> </span>vimrc<span class="w"> </span>file:<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$VIM</span><span class="s2">/sysinit.vim&quot;</span>
+<span class="w">  </span>fall-back<span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nv">$VIM</span>:<span class="w"> </span><span class="s2">&quot;/usr/share/nvim&quot;</span>
 
-Run :checkhealth <span class="k">for</span> more info
+Run<span class="w"> </span>:checkhealth<span class="w"> </span><span class="k">for</span><span class="w"> </span>more<span class="w"> </span>info
 </code></pre></div>
 
 <p>安装好nvim之后，建议先安装一下gcc，go, nodejs, rustc等开发语言编译工具链和运行环境。</p>
-<div class="highlight"><pre><span></span><code>sudo dnf install -y gcc go nodejs
-curl --proto <span class="s1">&#39;=https&#39;</span> --tlsv1.2 -sSf https://sh.rustup.rs <span class="p">|</span> sh
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>dnf<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>gcc<span class="w"> </span>go<span class="w"> </span>nodejs
+curl<span class="w"> </span>--proto<span class="w"> </span><span class="s1">&#39;=https&#39;</span><span class="w"> </span>--tlsv1.2<span class="w"> </span>-sSf<span class="w"> </span>https://sh.rustup.rs<span class="w"> </span><span class="p">|</span><span class="w"> </span>sh
 </code></pre></div>
 
 <p>另外需要安装一下github cli即github的命令行工具，Mason.nvim这个LSP Server管理器默认会用到它。</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># https://github.com/cli/cli/blob/trunk/docs/install_linux.md</span>
-sudo dnf install <span class="s1">&#39;dnf-command(config-manager)&#39;</span>
-sudo dnf config-manager --add-repo -y https://cli.github.com/packages/rpm/gh-cli.repo
-sudo dnf install -y gh
+sudo<span class="w"> </span>dnf<span class="w"> </span>install<span class="w"> </span><span class="s1">&#39;dnf-command(config-manager)&#39;</span>
+sudo<span class="w"> </span>dnf<span class="w"> </span>config-manager<span class="w"> </span>--add-repo<span class="w"> </span>-y<span class="w"> </span>https://cli.github.com/packages/rpm/gh-cli.repo
+sudo<span class="w"> </span>dnf<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>gh
 </code></pre></div>
 
 <p>接着还需安装一些文件查找辅助工具，例如fd-find，fzf和ripgrep等：</p>
-<div class="highlight"><pre><span></span><code>sudo dnf install -y fd-find fzf ripgrep
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>dnf<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>fd-find<span class="w"> </span>fzf<span class="w"> </span>ripgrep
 </code></pre></div>
 
 <p>最后git clone这个github仓库到本地的<code>./config/nvim</code>目录下即可：</p>
-<div class="highlight"><pre><span></span><code>mkdir ~/.config
-git clone https://github.com/fangying/nvim.git ~/.config/nvim
+<div class="highlight"><pre><span></span><code>mkdir<span class="w"> </span>~/.config
+git<span class="w"> </span>clone<span class="w"> </span>https://github.com/fangying/nvim.git<span class="w"> </span>~/.config/nvim
 </code></pre></div>
 
 <p>克隆到本地之后，直接执行nvim命令，nvim会自动开始执行以下几个步骤来完成初始化。</p>
@@ -151,10 +151,10 @@ git clone https://github.com/fangying/nvim.git ~/.config/nvim
 <h3>telescope.nvim</h3>
 <p><img alt="telescope.nvim" src="../images/telescope-nvim.gif"></p>
 <p>Telescope.nvim是一个超级插件，它可以为我们提供查找、过滤、预览、选择等功能。其本身还可以集成许多子插件，进一步可以实现项目管理、会话管理等功能。Telescope的默认快捷键配置为：</p>
-<div class="highlight"><pre><span></span><code>&lt;leader&gt;ff 查找文件
-&lt;leader&gt;fg 查找符号
-&lt;leader&gt;fp 查找项目
-&lt;leader&gt;fs 查找代码片段
+<div class="highlight"><pre><span></span><code>&lt;leader&gt;ff<span class="w"> </span>查找文件
+&lt;leader&gt;fg<span class="w"> </span>查找符号
+&lt;leader&gt;fp<span class="w"> </span>查找项目
+&lt;leader&gt;fs<span class="w"> </span>查找代码片段
 </code></pre></div>
 
 <h3>Tree-Sitter</h3>

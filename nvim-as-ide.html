@@ -93,37 +93,37 @@
 <p>本文的目的是打造一个基于<code>coc.nvim</code>的开箱即用的轻量级Neovim IDE。</p>
 <h1>2. 安装</h1>
 <p>首先需要安装nvim，建议nvim版本至少在0.7以上。</p>
-<div class="highlight"><pre><span></span><code>$ nvim -v
-NVIM v0.7.2
-Build type: Release
-LuaJIT <span class="m">2</span>.1.0-beta3
-Compiled by runner@fv-az164-457
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>nvim<span class="w"> </span>-v
+NVIM<span class="w"> </span>v0.7.2
+Build<span class="w"> </span>type:<span class="w"> </span>Release
+LuaJIT<span class="w"> </span><span class="m">2</span>.1.0-beta3
+Compiled<span class="w"> </span>by<span class="w"> </span>runner@fv-az164-457
 
-Features: +acl +iconv +tui
-See <span class="s2">&quot;:help feature-compile&quot;</span>
+Features:<span class="w"> </span>+acl<span class="w"> </span>+iconv<span class="w"> </span>+tui
+See<span class="w"> </span><span class="s2">&quot;:help feature-compile&quot;</span>
 
-   system vimrc file: <span class="s2">&quot;</span><span class="nv">$VIM</span><span class="s2">/sysinit.vim&quot;</span>
-  fall-back <span class="k">for</span> <span class="nv">$VIM</span>: <span class="s2">&quot;/share/nvim&quot;</span>
+<span class="w">   </span>system<span class="w"> </span>vimrc<span class="w"> </span>file:<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$VIM</span><span class="s2">/sysinit.vim&quot;</span>
+<span class="w">  </span>fall-back<span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nv">$VIM</span>:<span class="w"> </span><span class="s2">&quot;/share/nvim&quot;</span>
 
-Run :checkhealth <span class="k">for</span> more info
+Run<span class="w"> </span>:checkhealth<span class="w"> </span><span class="k">for</span><span class="w"> </span>more<span class="w"> </span>info
 </code></pre></div>
 
 <p>你需要安装nodejs运行环境，因为这个开箱即用的nvim配置基于<code>coc.nvim</code>实现。<code>coc.nvim</code>是由赵启明主导开发的一个基于JavaScript的nvim的LSP解决方案，它需要nodejs运行时提供支持。</p>
-<div class="highlight"><pre><span></span><code>wget https://nodejs.org/dist/v16.17.0/node-v16.17.0-linux-x64.tar.xz
-tar xf node-v16.17.0-linux-x64.tar.xz -C /usr/local
+<div class="highlight"><pre><span></span><code>wget<span class="w"> </span>https://nodejs.org/dist/v16.17.0/node-v16.17.0-linux-x64.tar.xz
+tar<span class="w"> </span>xf<span class="w"> </span>node-v16.17.0-linux-x64.tar.xz<span class="w"> </span>-C<span class="w"> </span>/usr/local
 </code></pre></div>
 
 <p>接着安装一些必要的语言编译工具链，还有查找辅助工具fd-find等。</p>
-<div class="highlight"><pre><span></span><code>sudo dnf install -y gcc go nodejs clang llvm
-curl --proto <span class="s1">&#39;=https&#39;</span> --tlsv1.2 -sSf https://sh.rustup.rs <span class="p">|</span> sh
-sudo dnf install -y fd-find fzf ripgrep
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>dnf<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>gcc<span class="w"> </span>go<span class="w"> </span>nodejs<span class="w"> </span>clang<span class="w"> </span>llvm
+curl<span class="w"> </span>--proto<span class="w"> </span><span class="s1">&#39;=https&#39;</span><span class="w"> </span>--tlsv1.2<span class="w"> </span>-sSf<span class="w"> </span>https://sh.rustup.rs<span class="w"> </span><span class="p">|</span><span class="w"> </span>sh
+sudo<span class="w"> </span>dnf<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>fd-find<span class="w"> </span>fzf<span class="w"> </span>ripgrep
 </code></pre></div>
 
 <p>然后使用我提供的配置文件来，进行初始化即可。这个开箱即用的Neovim配置文件我已经放到了自己的一个dotfiles代码repo中，直接clone下来就可以使用了。</p>
-<div class="highlight"><pre><span></span><code>git clone https://github.com/fangying/dotfiles.git
-<span class="nb">cd</span> dotfiles
-mkdir ~/.config -pv
-cp .config/nvim ~/.config -rf
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/fangying/dotfiles.git
+<span class="nb">cd</span><span class="w"> </span>dotfiles
+mkdir<span class="w"> </span>~/.config<span class="w"> </span>-pv
+cp<span class="w"> </span>.config/nvim<span class="w"> </span>~/.config<span class="w"> </span>-rf
 </code></pre></div>
 
 <p>dotfiles仓库里面包含了我自己在用的nvim，tmux，alacritty配置文件，这里我们只需要将nvim的文件拷贝到nvim的配置目录即可。拷贝完成后，执行nvim命令会自动下载plug.vim并通过plug.vim插件管理器自动下载其他插件。还是那句话，这个过程会自动去github下载插件，建议挂梯子。</p>
@@ -131,12 +131,12 @@ cp .config/nvim ~/.config -rf
 <p><strong>注意</strong>: 插件自动安装完成之后，建议运行<code>:checkhealth</code>命令，安装部分插件缺失的依赖。</p>
 <h1>3. 定制</h1>
 <p>coc.nvim提供了一站式的LSP服务，集成了众多的语言LSP Server，建议看下<code>coc.nvim</code>的项目文档，了解<code>coc.nvim</code>的具体使用方法。初始化之后，我们安装一些必要的<code>coc.nvim</code>集成的子插件。例如，下面的命令coc会帮忙安装json，rust-analyzer，clangd，go，typescript等语言的LSP Server这样可以支持对语言的自动补全。</p>
-<div class="highlight"><pre><span></span><code>:CocInstall coc-json coc-python coc-rust-analyzer coc-clangd coc-go coc-tsserver coc-yaml coc-snippets
+<div class="highlight"><pre><span></span><code>:CocInstall<span class="w"> </span>coc-json<span class="w"> </span>coc-python<span class="w"> </span>coc-rust-analyzer<span class="w"> </span>coc-clangd<span class="w"> </span>coc-go<span class="w"> </span>coc-tsserver<span class="w"> </span>coc-yaml<span class="w"> </span>coc-snippets
 </code></pre></div>
 
 <p>也可以安装一个叫做coc-marketplace的插件，这样可以用marketplace查看和管理coc的各种插件。</p>
-<div class="highlight"><pre><span></span><code>:CocInstall coc-marketplace
-:CocList marketplace
+<div class="highlight"><pre><span></span><code>:CocInstall<span class="w"> </span>coc-marketplace
+:CocList<span class="w"> </span>marketplace
 </code></pre></div>
 
 <p>查看当前<code>coc.nvim</code>当前的配置文件，看下当前LSP Server的配置，执行<code>CocConfig</code>命令：</p>
@@ -148,10 +148,10 @@ cp .config/nvim ~/.config -rf
 <p>配置好LSP之后，就可以使用nvim了，coc.nvim提功能全面的代码补全功能支持。</p>
 <p><img alt="coc-code-completion" src="../images/nvim-code-completion.gif"></p>
 <p>代码浏览默认会计键映射：</p>
-<div class="highlight"><pre><span></span><code>gd 查看符号定义
-gy 查看类型声明
-gi 查看符号的实现
-gr 查看符号的调用关系
+<div class="highlight"><pre><span></span><code>gd<span class="w"> </span>查看符号定义
+gy<span class="w"> </span>查看类型声明
+gi<span class="w"> </span>查看符号的实现
+gr<span class="w"> </span>查看符号的调用关系
 </code></pre></div>
 
 <h1>4. 使用</h1>
@@ -159,8 +159,8 @@ gr 查看符号的调用关系
 <h3>vim-clap</h3>
 <p><img alt="vim-clap" src="../images/vim-clap.png"></p>
 <p>vim-clap提供了非常优秀的查找功能体验，并且可以和<code>coc.nvim</code>互相配合打通数据，让文件和符号的查找都十分方便。默认的快捷键配置如下。</p>
-<div class="highlight"><pre><span></span><code>&lt;leader&gt;ff 查找文件
-&lt;leader&gt;fg 查找符号
+<div class="highlight"><pre><span></span><code>&lt;leader&gt;ff<span class="w"> </span>查找文件
+&lt;leader&gt;fg<span class="w"> </span>查找符号
 </code></pre></div>
 
 <h3>Nerd-Tree</h3>
