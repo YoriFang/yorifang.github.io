@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="https://kernel.love/theme/css/style.min.css?2fcac227">
+<link rel="stylesheet" href="https://blog.kernel.love/theme/css/style.min.css?2fcac227">
 
         <link rel="dns-prefetch" href="//fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
@@ -19,16 +19,16 @@
 <meta name="keywords" content="virtualization, virtio, virtio-net, virtio-scsi, virtio-blk, virtqueue, virt, " />
 
 <meta property="og:title" content="Virtio协议概述 "/>
-<meta property="og:url" content="https://kernel.love/virtio-overview.html" />
+<meta property="og:url" content="https://blog.kernel.love/virtio-overview.html" />
 <meta property="og:description" content="virtio overview" />
-<meta property="og:site_name" content="kernel.love" />
+<meta property="og:site_name" content="blog.kernel.love" />
 <meta property="og:article:author" content="Yori Fang" />
 <meta property="og:article:published_time" content="2019-09-13T23:00:00+08:00" />
 <meta property="og:article:modified_time" content="2019-09-13T23:00:00+08:00" />
 <meta name="twitter:title" content="Virtio协议概述 ">
 <meta name="twitter:description" content="virtio overview">
 
-        <title>Virtio协议概述  · kernel.love
+        <title>Virtio协议概述  · blog.kernel.love
 </title>
 
 <script>
@@ -52,19 +52,19 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </a>
-                        <a class="brand" href="https://kernel.love/"><span class=site-name>kernel.love</span></a>
+                        <a class="brand" href="https://blog.kernel.love/"><span class=site-name>blog.kernel.love</span></a>
                         <div class="nav-collapse collapse">
                             <ul class="nav pull-right top-menu">
                                 <li >
                                     <a href=
-                                       https://kernel.love
+                                       https://blog.kernel.love
                                     >Home</a>
                                 </li>
-                                <li ><a href="https://kernel.love/pages/about.html">About</a></li>
-                                <li ><a href="https://kernel.love/categories.html">Categories</a></li>
-                                <li ><a href="https://kernel.love/tags.html">Tags</a></li>
-                                <li ><a href="https://kernel.love/archives.html">Archives</a></li>
-                                <li><form class="navbar-search" action="https://kernel.love/search.html" onsubmit="return validateForm(this.elements['q'].value);"> <input type="text" class="search-query" placeholder="Search" name="q" id="tipue_search_input"></form></li>
+                                <li ><a href="https://blog.kernel.love/pages/about.html">About</a></li>
+                                <li ><a href="https://blog.kernel.love/categories.html">Categories</a></li>
+                                <li ><a href="https://blog.kernel.love/tags.html">Tags</a></li>
+                                <li ><a href="https://blog.kernel.love/archives.html">Archives</a></li>
+                                <li><form class="navbar-search" action="https://blog.kernel.love/search.html" onsubmit="return validateForm(this.elements['q'].value);"> <input type="text" class="search-query" placeholder="Search" name="q" id="tipue_search_input"></form></li>
                             </ul>
                         </div>
                     </div>
@@ -78,7 +78,7 @@
 <div class="row-fluid">
     <header class="page-header span10 offset2">
         <h1>
-            <a href="https://kernel.love/virtio-overview.html">
+            <a href="https://blog.kernel.love/virtio-overview.html">
                 Virtio协议概述
             </a>
         </h1>
@@ -193,16 +193,16 @@ virtio legacy（virtio 0.95）协议规定，对应的配置数据结构（virti
 
 <p>以上的每种配置结构是直接映射到virtio设备的BAR空间内，那么如何指定每种配置结构的位置呢？
 答案是通过<code>PCI Capability list</code>方式去指定，这和物理PCI设备是一样的，体现了virtio-pci的协议兼容性。</p>
-<div class="highlight"><pre><span></span><code><span class="nt">struct</span><span class="w"> </span><span class="nt">virtio_pci_cap</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="err">u8</span><span class="w"> </span><span class="err">cap_vndr</span><span class="p">;</span><span class="w">    </span><span class="c">/* Generic PCI field: PCI_CAP_ID_VNDR */</span>
-<span class="w">        </span><span class="err">u8</span><span class="w"> </span><span class="err">cap_next</span><span class="p">;</span><span class="w">    </span><span class="c">/* Generic PCI field: next ptr. */</span>
-<span class="w">        </span><span class="err">u8</span><span class="w"> </span><span class="err">cap_len</span><span class="p">;</span><span class="w">     </span><span class="c">/* Generic PCI field: capability length */</span>
-<span class="w">        </span><span class="err">u8</span><span class="w"> </span><span class="err">cfg_type</span><span class="p">;</span><span class="w">    </span><span class="c">/* Identifies the structure. */</span>
-<span class="w">        </span><span class="err">u8</span><span class="w"> </span><span class="err">bar</span><span class="p">;</span><span class="w">         </span><span class="c">/* Where to find it. */</span>
-<span class="w">        </span><span class="err">u8</span><span class="w"> </span><span class="err">padding</span><span class="cp">[</span><span class="mi">3</span><span class="cp">]</span><span class="p">;</span><span class="w">  </span><span class="c">/* Pad to full dword. */</span>
-<span class="w">        </span><span class="err">le32</span><span class="w"> </span><span class="err">offset</span><span class="p">;</span><span class="w">    </span><span class="c">/* Offset within bar. */</span>
-<span class="w">        </span><span class="err">le32</span><span class="w"> </span><span class="err">length</span><span class="p">;</span><span class="w">    </span><span class="c">/* Length of the structure, in bytes. */</span>
-<span class="p">}</span><span class="o">;</span>
+<div class="highlight"><pre><span></span><code><span class="nx">struct</span><span class="w"> </span><span class="nx">virtio_pci_cap</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">u8</span><span class="w"> </span><span class="nx">cap_vndr</span><span class="p">;</span><span class="w">    </span><span class="cm">/* Generic PCI field: PCI_CAP_ID_VNDR */</span>
+<span class="w">        </span><span class="kt">u8</span><span class="w"> </span><span class="nx">cap_next</span><span class="p">;</span><span class="w">    </span><span class="cm">/* Generic PCI field: next ptr. */</span>
+<span class="w">        </span><span class="kt">u8</span><span class="w"> </span><span class="nx">cap_len</span><span class="p">;</span><span class="w">     </span><span class="cm">/* Generic PCI field: capability length */</span>
+<span class="w">        </span><span class="kt">u8</span><span class="w"> </span><span class="nx">cfg_type</span><span class="p">;</span><span class="w">    </span><span class="cm">/* Identifies the structure. */</span>
+<span class="w">        </span><span class="kt">u8</span><span class="w"> </span><span class="nx">bar</span><span class="p">;</span><span class="w">         </span><span class="cm">/* Where to find it. */</span>
+<span class="w">        </span><span class="kt">u8</span><span class="w"> </span><span class="nx">padding</span><span class="p">[</span><span class="mi">3</span><span class="p">];</span><span class="w">  </span><span class="cm">/* Pad to full dword. */</span>
+<span class="w">        </span><span class="nx">le32</span><span class="w"> </span><span class="nx">offset</span><span class="p">;</span><span class="w">    </span><span class="cm">/* Offset within bar. */</span>
+<span class="w">        </span><span class="nx">le32</span><span class="w"> </span><span class="nx">length</span><span class="p">;</span><span class="w">    </span><span class="cm">/* Length of the structure, in bytes. */</span>
+<span class="p">};</span>
 </code></pre></div>
 
 <p>只是略微不同的是，virtio-pci的Capability有一个统一的结构，
@@ -569,11 +569,11 @@ Virtio前后端通信概括起来只有两个方向，即GuestOS通知QEMU和QEM
 最后通过KVM的ioctl投递中断？
 从代码路径上来看，后者明显路径更长，谁知道原因告诉我一下!!!。
 https://patchwork.kernel.org/patch/9531577/</p>
-<div class="highlight"><pre><span></span><code><span class="nv">Once</span><span class="w"> </span><span class="nv">in</span><span class="w"> </span><span class="nv">virtio_notify_irqfd</span>,<span class="w"> </span><span class="nv">once</span><span class="w"> </span><span class="nv">in</span><span class="w"> </span><span class="nv">virtio_queue_guest_notifier_read</span>.
+<div class="highlight"><pre><span></span><code>Once in virtio_notify_irqfd, once in virtio_queue_guest_notifier_read.
 
-<span class="nv">Unfortunately</span>,<span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nv">virtio</span><span class="o">-</span><span class="nv">blk</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">MSI</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">KVM</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">old</span><span class="w"> </span><span class="nv">Windows</span><span class="w"> </span><span class="nv">drivers</span><span class="w"> </span><span class="nv">we</span><span class="w"> </span><span class="nv">need</span><span class="w"> </span><span class="nv">the</span><span class="w"> </span><span class="nv">one</span><span class="w"> </span><span class="nv">in</span><span class="w"> </span><span class="nv">virtio_notify_irqfd</span>.
-<span class="k">For</span><span class="w"> </span><span class="nv">virtio</span><span class="o">-</span><span class="nv">net</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">vhost</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">INTx</span><span class="w"> </span><span class="nv">we</span><span class="w"> </span><span class="nv">need</span><span class="w"> </span><span class="nv">the</span><span class="w"> </span><span class="nv">one</span><span class="w"> </span><span class="nv">in</span><span class="w"> </span><span class="nv">virtio_queue_guest_notifier_read</span>.<span class="w"> </span>
-这显然路径更长啊。<span class="w"> </span>
+Unfortunately, for virtio-blk + MSI + KVM + old Windows drivers we need the one in virtio_notify_irqfd.
+For virtio-net + vhost + INTx we need the one in virtio_queue_guest_notifier_read. 
+这显然路径更长啊。 
 </code></pre></div>
 
 <p>Ok，到这里virtio前后端通信机制已经明了，最后一个小节我们以virtio-net为例，梳理一下virtio中的部分核心代码流程。</p>
@@ -757,14 +757,14 @@ virtqueue队列的中断服务程序是 <code>vp_vring_interrupt</code>。</p>
 
 <p>不难想到中断服务程序里面会调用队列上的callback。
 我们再回过头来看下<code>virtnet_find_vqs</code>，原来接受队列的回调函数是<code>skb_recv_done</code>，发送队列的回调函数是<code>skb_xmit_done</code>。</p>
-<div class="highlight"><pre><span></span><code><span class="n">static</span><span class="w"> </span><span class="n">int</span><span class="w"> </span><span class="n">virtnet_find_vqs</span><span class="p">(</span><span class="n">struct</span><span class="w"> </span><span class="n">virtnet_info</span><span class="w"> </span><span class="o">*</span><span class="n">vi</span><span class="p">)</span>
-<span class="p">{</span>
-<span class="w">       </span><span class="cm">/* Allocate/initialize parameters for send/receive virtqueues */</span>
-<span class="w">        </span><span class="n">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">vi</span><span class="o">-&gt;</span><span class="n">max_queue_pairs</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="n">callbacks</span><span class="p">[</span><span class="n">rxq2vq</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">skb_recv_done</span><span class="p">;</span>
-<span class="w">        </span><span class="n">callbacks</span><span class="p">[</span><span class="n">txq2vq</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">skb_xmit_done</span><span class="p">;</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="p">}</span>
+<div class="highlight"><pre><span></span><code>static int virtnet_find_vqs(struct virtnet_info <span class="gs">*vi)</span>
+<span class="gs">{</span>
+<span class="gs">       /*</span> Allocate/initialize parameters for send/receive virtqueues */
+        for (i = 0; i &lt; vi-&gt;max_queue_pairs; i++) {
+        callbacks[rxq2vq(i)] = skb_recv_done;
+        callbacks[txq2vq(i)] = skb_xmit_done;
+    }
+}
 </code></pre></div>
 
 <p>OK，这个小节就到这里。Are you clear ?</p>
@@ -851,9 +851,9 @@ Qemu主循环收到POLL_IN事件调用回调函数收包。</p>
  
                 <p id="post-share-links">
     Share on:
-      <a href="https://twitter.com/intent/tweet?text=Virtio%E5%8D%8F%E8%AE%AE%E6%A6%82%E8%BF%B0&url=https%3A//kernel.love/virtio-overview.html&hashtags=virtualization,virtio,virtio-net,virtio-scsi,virtio-blk,virtqueue" target="_blank" rel="nofollow noopener noreferrer" title="Share on Twitter">Twitter</a>
- ❄       <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A//kernel.love/virtio-overview.html" target="_blank" rel="nofollow noopener noreferrer" title="Share on Facebook">Facebook</a>
- ❄       <a href="mailto:?subject=Virtio%E5%8D%8F%E8%AE%AE%E6%A6%82%E8%BF%B0&amp;body=https%3A//kernel.love/virtio-overview.html" target="_blank" rel="nofollow noopener noreferrer" title="Share via Email">Email</a>
+      <a href="https://twitter.com/intent/tweet?text=Virtio%E5%8D%8F%E8%AE%AE%E6%A6%82%E8%BF%B0&url=https%3A//blog.kernel.love/virtio-overview.html&hashtags=virtualization,virtio,virtio-net,virtio-scsi,virtio-blk,virtqueue" target="_blank" rel="nofollow noopener noreferrer" title="Share on Twitter">Twitter</a>
+ ❄       <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A//blog.kernel.love/virtio-overview.html" target="_blank" rel="nofollow noopener noreferrer" title="Share on Facebook">Facebook</a>
+ ❄       <a href="mailto:?subject=Virtio%E5%8D%8F%E8%AE%AE%E6%A6%82%E8%BF%B0&amp;body=https%3A//blog.kernel.love/virtio-overview.html" target="_blank" rel="nofollow noopener noreferrer" title="Share via Email">Email</a>
 
             
             
@@ -868,19 +868,19 @@ Qemu主循环收到POLL_IN事件调用回调函数收包。</p>
 <section>
     <h2>Related Posts</h2>
 <ul class="related-posts-list">
-<li><a href="https://kernel.love/vfio-insight.html" title="VFIO关键技术点分析">VFIO关键技术点分析</a></li>
-<li><a href="https://kernel.love/vtd_interrupt_remapping_code_analysis.html" title="VT-d Interrupt Remapping代码分析">VT-d Interrupt Remapping代码分析</a></li>
-<li><a href="https://kernel.love/vtd-posted-interrupt-code-analysis.html" title="VT-d Interrupt Posting代码分析">VT-d Interrupt Posting代码分析</a></li>
-<li><a href="https://kernel.love/x86-nmi.html" title="Virt NMI Emulation">Virt NMI Emulation</a></li>
-<li><a href="https://kernel.love/microVM.html" title="轻量级虚拟化技术">轻量级虚拟化技术</a></li>
+<li><a href="https://blog.kernel.love/vfio-insight.html" title="VFIO关键技术点分析">VFIO关键技术点分析</a></li>
+<li><a href="https://blog.kernel.love/vtd_interrupt_remapping_code_analysis.html" title="VT-d Interrupt Remapping代码分析">VT-d Interrupt Remapping代码分析</a></li>
+<li><a href="https://blog.kernel.love/vtd-posted-interrupt-code-analysis.html" title="VT-d Interrupt Posting代码分析">VT-d Interrupt Posting代码分析</a></li>
+<li><a href="https://blog.kernel.love/x86-nmi.html" title="Virt NMI Emulation">Virt NMI Emulation</a></li>
+<li><a href="https://blog.kernel.love/microVM.html" title="轻量级虚拟化技术">轻量级虚拟化技术</a></li>
 </ul>
 <hr />
 </section>
             <aside>
             <nav>
             <ul class="articles-timeline">
-                <li class="previous-article">« <a href="https://kernel.love/armv8-virt-guide.html" title="Previous: ARMv8虚拟化技术概述">ARMv8虚拟化技术概述</a></li>
-                <li class="next-article"><a href="https://kernel.love/vfio-mdev.html" title="Next: VFIO mdev框架">VFIO mdev框架</a> »</li>
+                <li class="previous-article">« <a href="https://blog.kernel.love/armv8-virt-guide.html" title="Previous: ARMv8虚拟化技术概述">ARMv8虚拟化技术概述</a></li>
+                <li class="next-article"><a href="https://blog.kernel.love/vfio-mdev.html" title="Next: VFIO mdev框架">VFIO mdev框架</a> »</li>
             </ul>
             </nav>
             </aside>
@@ -890,25 +890,25 @@ Qemu主循环收到POLL_IN事件调用回调函数收包。</p>
             <time itemprop="dateCreated" datetime="2019-09-13T23:00:00+08:00">Fri 13 September 2019</time>
 
             <h4>Category</h4>
-            <a class="category-link" href="https://kernel.love/categories.html#virt-ref">virt</a>
+            <a class="category-link" href="https://blog.kernel.love/categories.html#virt-ref">virt</a>
             <h4>Tags</h4>
             <ul class="list-of-tags tags-in-article">
-                <li><a href="https://kernel.love/tags.html#virtio-ref">virtio
+                <li><a href="https://blog.kernel.love/tags.html#virtio-ref">virtio
                     <span class="superscript">1</span>
 </a></li>
-                <li><a href="https://kernel.love/tags.html#virtio-blk-ref">virtio-blk
+                <li><a href="https://blog.kernel.love/tags.html#virtio-blk-ref">virtio-blk
                     <span class="superscript">1</span>
 </a></li>
-                <li><a href="https://kernel.love/tags.html#virtio-net-ref">virtio-net
+                <li><a href="https://blog.kernel.love/tags.html#virtio-net-ref">virtio-net
                     <span class="superscript">1</span>
 </a></li>
-                <li><a href="https://kernel.love/tags.html#virtio-scsi-ref">virtio-scsi
+                <li><a href="https://blog.kernel.love/tags.html#virtio-scsi-ref">virtio-scsi
                     <span class="superscript">1</span>
 </a></li>
-                <li><a href="https://kernel.love/tags.html#virtqueue-ref">virtqueue
+                <li><a href="https://blog.kernel.love/tags.html#virtqueue-ref">virtqueue
                     <span class="superscript">1</span>
 </a></li>
-                <li><a href="https://kernel.love/tags.html#virtualization-ref">virtualization
+                <li><a href="https://blog.kernel.love/tags.html#virtualization-ref">virtualization
                     <span class="superscript">12</span>
 </a></li>
             </ul>
@@ -1005,7 +1005,7 @@ Qemu主循环收到POLL_IN事件调用回调函数收包。</p>
         </div>
 <footer>
     <div>
-        <span xmlns:dct="http://purl.org/dc/terms/" property="dct:title"> kernel.love"</span> by <a xmlns:cc="http://creativecommons.org/ns#" href="https://kernel.love" property="cc:attributionName" rel="cc:attributionURL">Yori Fang</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/deed.en_US">Creative Commons Attribution-ShareAlike 3.0 Unported License</a>.
+        <span xmlns:dct="http://purl.org/dc/terms/" property="dct:title"> blog.kernel.love"</span> by <a xmlns:cc="http://creativecommons.org/ns#" href="https://blog.kernel.love" property="cc:attributionName" rel="cc:attributionURL">Yori Fang</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/deed.en_US">Creative Commons Attribution-ShareAlike 3.0 Unported License</a>.
     </div>
 
 
@@ -1017,7 +1017,7 @@ Qemu主循环收到POLL_IN事件调用回调函数收包。</p>
     </div>
 </footer>            <script src="//code.jquery.com/jquery.min.js"></script>
         <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
-        <script src="https://kernel.love/theme/js/elegant.prod.9e9d5ce754.js"></script>
+        <script src="https://blog.kernel.love/theme/js/elegant.prod.9e9d5ce754.js"></script>
         <script>
             function validateForm(query)
             {
