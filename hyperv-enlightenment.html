@@ -11,7 +11,7 @@
 
         <meta name="author" content="YoriFang" />
 
-        <meta name="description" content="本文不是为了分析HyperV，而是来分析一下当前KVM中对hyperv的一些增强的支持，这些HyperV增强能过对KVM场景下Windows虚拟机的性能有提升帮助。 在大多数场景下通过软件模拟的硬件性能会比较差，为此KVM实现了自己的半虚拟化接口。 Linux虚拟机通常能够在半虚拟化下工作的很好，因为 …
+        <meta name="description" content="本文不是为了分析HyperV，而是来分析一下当前KVM中对hyperv的一些增强的支持， 这些HyperV Enlightenment能够对KVM场景下Windows虚拟机的性能提升有帮助。 在大多数场景下通过软件模拟的硬件性能会比较差，为此KVM实现了自己的半虚拟化接口。 Linux虚拟机通常能够在半虚拟化下工作的很好，因 …
 " />
         <meta property="og:type" content="article" />
         <meta name="twitter:card" content="summary">
@@ -20,12 +20,12 @@
 
 <meta property="og:title" content="KVM中的HperV增强 "/>
 <meta property="og:url" content="https://blog.kernel.love/hyperv-enlightenment.html" />
-<meta property="og:description" content="本文不是为了分析HyperV，而是来分析一下当前KVM中对hyperv的一些增强的支持，这些HyperV增强能过对KVM场景下Windows虚拟机的性能有提升帮助。 在大多数场景下通过软件模拟的硬件性能会比较差，为此KVM实现了自己的半虚拟化接口。 Linux虚拟机通常能够在半虚拟化下工作的很好，因为 …" />
+<meta property="og:description" content="本文不是为了分析HyperV，而是来分析一下当前KVM中对hyperv的一些增强的支持， 这些HyperV Enlightenment能够对KVM场景下Windows虚拟机的性能提升有帮助。 在大多数场景下通过软件模拟的硬件性能会比较差，为此KVM实现了自己的半虚拟化接口。 Linux虚拟机通常能够在半虚拟化下工作的很好，因 …" />
 <meta property="og:site_name" content="blog.kernel.love" />
 <meta property="og:article:author" content="YoriFang" />
 <meta property="og:article:published_time" content="2022-11-11T20:20:00+08:00" />
 <meta name="twitter:title" content="KVM中的HperV增强 ">
-<meta name="twitter:description" content="本文不是为了分析HyperV，而是来分析一下当前KVM中对hyperv的一些增强的支持，这些HyperV增强能过对KVM场景下Windows虚拟机的性能有提升帮助。 在大多数场景下通过软件模拟的硬件性能会比较差，为此KVM实现了自己的半虚拟化接口。 Linux虚拟机通常能够在半虚拟化下工作的很好，因为 …">
+<meta name="twitter:description" content="本文不是为了分析HyperV，而是来分析一下当前KVM中对hyperv的一些增强的支持， 这些HyperV Enlightenment能够对KVM场景下Windows虚拟机的性能提升有帮助。 在大多数场景下通过软件模拟的硬件性能会比较差，为此KVM实现了自己的半虚拟化接口。 Linux虚拟机通常能够在半虚拟化下工作的很好，因 …">
 
         <title>KVM中的HperV增强  · blog.kernel.love
 </title>
@@ -88,14 +88,15 @@
         <div class="span8 offset2 article-content">
             
             <p><img alt="hyperv-logo" src="https://www.pikpng.com/pngl/m/361-3613517_microsoft-hyper-v-logo-microsoft-hyper-v-logo.png"></p>
-<p>本文不是为了分析HyperV，而是来分析一下当前KVM中对hyperv的一些增强的支持，这些HyperV增强能过对KVM场景下Windows虚拟机的性能有提升帮助。
+<p>本文不是为了分析HyperV，而是来分析一下当前KVM中对hyperv的一些增强的支持，</p>
+<p>这些HyperV Enlightenment能够对KVM场景下Windows虚拟机的性能提升有帮助。
 在大多数场景下通过软件模拟的硬件性能会比较差，为此KVM实现了自己的半虚拟化接口。
 Linux虚拟机通常能够在半虚拟化下工作的很好，因为内核本身会同步支持半虚拟化。
 但通常来说为一些闭源的操作系统来实现这些就比较困难了，例如Microsoft Windows。
 为此KVM在x86上为Windows Guest实现了HyperV启迪（HyperV Enlightenment），
 这些特性会让Windows和HyperV的Guest认为他们运行在HyperV兼容的Hypervisor上，
 这样Guest就会自动开启一些半虚拟化的性能优化。</p>
-<p>翻译原文：<img alt="hyper-v enlightenment" src="https://www.qemu.org/docs/master/system/i386/hyperv.html"></p>
+<p>翻译原文：<a href="https://www.qemu.org/docs/master/system/i386/hyperv.html">hyper-v enlightenment</a></p>
 <h3>设置HyperV启迪</h3>
 <p>默认情况下Qemu/KVM不会开启任何的HyperV启迪，qemu支持将单个的启迪特性通过cpu flags配置传入来尝试使能，例如：</p>
 <div class="highlight"><pre><span></span><code>qemu-system-x86_64 --enable-kvm --cpu host,hv_relaxed,hv_vpindex,hv_time, ...
