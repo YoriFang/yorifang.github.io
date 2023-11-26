@@ -183,10 +183,10 @@ APIC Timer的定时器频率：
 <p>Initial Count 和 Current Count Register（这个寄存器是ReadOnly的）</p>
 <p><img alt="initial_count_and_current_count_regs" src="../images/initial_count_and_current_count_regs.jpg"></p>
 <p>IA32_TSC_DEADLINE MSR （6E0H）是一个per-logical processor MSR（每个逻辑处理器都有自己的一个）。
-当我们给IA32_TSC_DEADLINE写一个非零值的时候就触发了该定时器，当逻辑处理器的TSC到达这个值的时候就触发一个中断。
-注意：
+当我们给IA32_TSC_DEADLINE写一个非零值的时候就触发了该定时器，当逻辑处理器的TSC到达这个值的时候就触发一个中断。</p>
+<p>注意：
 1. 每次写IA32_TSC_DEADLINE MSR的时候，最多出发1次时钟中断。
-2. TSC和IA32_TSC_DEADLINE都是64bit的。</p>
+1. TSC和IA32_TSC_DEADLINE都是64bit的。</p>
 <h3>10.6 ISSUING INTERPROCESSOR INTERRUPTS</h3>
 <p>Interrupt Command Register（ICR）</p>
 <p>注意：
