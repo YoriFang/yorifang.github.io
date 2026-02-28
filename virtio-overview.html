@@ -18,17 +18,17 @@
 
 <meta name="keywords" content="virtualization, virtio, virtio-net, virtio-scsi, virtio-blk, virtqueue, virt, " />
 
-<meta property="og:title" content="Virtio协议概述 "/>
+<meta property="og:title" content="Virtio Spec Overview "/>
 <meta property="og:url" content="https://blog.kernel.love/virtio-overview.html" />
 <meta property="og:description" content="virtio overview" />
 <meta property="og:site_name" content="blog.kernel.love" />
 <meta property="og:article:author" content="Yori Fang" />
 <meta property="og:article:published_time" content="2019-09-13T23:00:00+08:00" />
 <meta property="og:article:modified_time" content="2019-09-13T23:00:00+08:00" />
-<meta name="twitter:title" content="Virtio协议概述 ">
+<meta name="twitter:title" content="Virtio Spec Overview ">
 <meta name="twitter:description" content="virtio overview">
 
-        <title>Virtio协议概述  · blog.kernel.love
+        <title>Virtio Spec Overview  · blog.kernel.love
 </title>
 
 <script>
@@ -79,7 +79,7 @@
     <header class="page-header span10 offset2">
         <h1>
             <a href="https://blog.kernel.love/virtio-overview.html">
-                Virtio协议概述
+                Virtio Spec Overview
             </a>
         </h1>
     </header>
@@ -162,9 +162,9 @@ virtio-spec 4.2 <a href="https://docs.oasis-open.org/virtio/virtio/v1.1/csprd01/
 从virtio spec来看，老的virtio协议和新的virtio协议在这一块有很大改动。
 virtio legacy（virtio 0.95）协议规定，对应的配置数据结构（virtio common configuration structure）
 应该存放在设备的BAR0里面，我们称之为<code>virtio legay interface</code>，其结构如下：</p>
-<div class="highlight"><pre><span></span><code><span class="c">                       virtio legacy ==</span><span class="nv">&gt;</span><span class="c"> Mapped into PCI BAR0</span>
-<span class="c">    </span><span class="nb">+------------------------------------------------------------------+</span>
-<span class="c">    |                    Host Feature Bits</span><span class="k">[</span><span class="c">0:31</span><span class="k">]</span><span class="c">                       |</span>
+<div class="highlight"><pre><span></span><code><span class="c">                       virtio legacy ==</span><span class="nv">&gt;</span><span class="c"> Mapped into PCI BAR0 </span>
+<span class="c">    </span><span class="nb">+------------------------------------------------------------------+</span><span class="c"> </span>
+<span class="c">    |                    Host Feature Bits</span><span class="k">[</span><span class="c">0:31</span><span class="k">]</span><span class="c">                       | </span>
 <span class="c">    </span><span class="nb">+------------------------------------------------------------------+</span>
 <span class="c">    |                    Guest Feature Bits</span><span class="k">[</span><span class="c">0:31</span><span class="k">]</span><span class="c">                      |</span>
 <span class="c">    </span><span class="nb">+------------------------------------------------------------------+</span>
@@ -179,29 +179,29 @@ virtio legacy（virtio 0.95）协议规定，对应的配置数据结构（virti
 </code></pre></div>
 
 <p>对于新的<code>virtio modern</code>，协议将配置结构划分为5种类型：</p>
-<div class="highlight"><pre><span></span><code><span class="o">/*</span><span class="w"> </span><span class="n">Common</span><span class="w"> </span><span class="n">configuration</span><span class="w"> </span><span class="o">*/</span>
-#<span class="n">define</span><span class="w"> </span><span class="n">VIRTIO_PCI_CAP_COMMON_CFG</span><span class="w">        </span><span class="mi">1</span>
-<span class="o">/*</span><span class="w"> </span><span class="n">Notifications</span><span class="w"> </span><span class="o">*/</span>
+<div class="highlight"><pre><span></span><code><span class="o">/*</span><span class="w"> </span><span class="n">Common</span><span class="w"> </span><span class="n">configuration</span><span class="w"> </span><span class="o">*/</span><span class="w"> </span>
+#<span class="n">define</span><span class="w"> </span><span class="n">VIRTIO_PCI_CAP_COMMON_CFG</span><span class="w">        </span><span class="mi">1</span><span class="w"> </span>
+<span class="o">/*</span><span class="w"> </span><span class="n">Notifications</span><span class="w"> </span><span class="o">*/</span><span class="w"> </span>
 #<span class="n">define</span><span class="w"> </span><span class="n">VIRTIO_PCI_CAP_NOTIFY_CFG</span><span class="w">        </span><span class="mi">2</span>
-<span class="o">/*</span><span class="w"> </span><span class="n">ISR</span><span class="w"> </span><span class="n">Status</span><span class="w"> </span><span class="o">*/</span>
-#<span class="n">define</span><span class="w"> </span><span class="n">VIRTIO_PCI_CAP_ISR_CFG</span><span class="w">           </span><span class="mi">3</span>
-<span class="o">/*</span><span class="w"> </span><span class="n">Device</span><span class="w"> </span><span class="n">specific</span><span class="w"> </span><span class="n">configuration</span><span class="w"> </span><span class="o">*/</span>
-#<span class="n">define</span><span class="w"> </span><span class="n">VIRTIO_PCI_CAP_DEVICE_CFG</span><span class="w">        </span><span class="mi">4</span>
-<span class="o">/*</span><span class="w"> </span><span class="n">PCI</span><span class="w"> </span><span class="n">configuration</span><span class="w"> </span><span class="n">access</span><span class="w"> </span><span class="o">*/</span>
-#<span class="n">define</span><span class="w"> </span><span class="n">VIRTIO_PCI_CAP_PCI_CFG</span><span class="w">           </span><span class="mi">5</span>
+<span class="o">/*</span><span class="w"> </span><span class="n">ISR</span><span class="w"> </span><span class="n">Status</span><span class="w"> </span><span class="o">*/</span><span class="w"> </span>
+#<span class="n">define</span><span class="w"> </span><span class="n">VIRTIO_PCI_CAP_ISR_CFG</span><span class="w">           </span><span class="mi">3</span><span class="w"> </span>
+<span class="o">/*</span><span class="w"> </span><span class="n">Device</span><span class="w"> </span><span class="n">specific</span><span class="w"> </span><span class="n">configuration</span><span class="w"> </span><span class="o">*/</span><span class="w"> </span>
+#<span class="n">define</span><span class="w"> </span><span class="n">VIRTIO_PCI_CAP_DEVICE_CFG</span><span class="w">        </span><span class="mi">4</span><span class="w"> </span>
+<span class="o">/*</span><span class="w"> </span><span class="n">PCI</span><span class="w"> </span><span class="n">configuration</span><span class="w"> </span><span class="n">access</span><span class="w"> </span><span class="o">*/</span><span class="w"> </span>
+#<span class="n">define</span><span class="w"> </span><span class="n">VIRTIO_PCI_CAP_PCI_CFG</span><span class="w">           </span><span class="mi">5</span><span class="w"> </span>
 </code></pre></div>
 
 <p>以上的每种配置结构是直接映射到virtio设备的BAR空间内，那么如何指定每种配置结构的位置呢？
 答案是通过<code>PCI Capability list</code>方式去指定，这和物理PCI设备是一样的，体现了virtio-pci的协议兼容性。</p>
-<div class="highlight"><pre><span></span><code><span class="nx">struct</span><span class="w"> </span><span class="nx">virtio_pci_cap</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="kt">u8</span><span class="w"> </span><span class="nx">cap_vndr</span><span class="p">;</span><span class="w">    </span><span class="cm">/* Generic PCI field: PCI_CAP_ID_VNDR */</span>
-<span class="w">        </span><span class="kt">u8</span><span class="w"> </span><span class="nx">cap_next</span><span class="p">;</span><span class="w">    </span><span class="cm">/* Generic PCI field: next ptr. */</span>
-<span class="w">        </span><span class="kt">u8</span><span class="w"> </span><span class="nx">cap_len</span><span class="p">;</span><span class="w">     </span><span class="cm">/* Generic PCI field: capability length */</span>
-<span class="w">        </span><span class="kt">u8</span><span class="w"> </span><span class="nx">cfg_type</span><span class="p">;</span><span class="w">    </span><span class="cm">/* Identifies the structure. */</span>
-<span class="w">        </span><span class="kt">u8</span><span class="w"> </span><span class="nx">bar</span><span class="p">;</span><span class="w">         </span><span class="cm">/* Where to find it. */</span>
-<span class="w">        </span><span class="kt">u8</span><span class="w"> </span><span class="nx">padding</span><span class="p">[</span><span class="mi">3</span><span class="p">];</span><span class="w">  </span><span class="cm">/* Pad to full dword. */</span>
-<span class="w">        </span><span class="nx">le32</span><span class="w"> </span><span class="nx">offset</span><span class="p">;</span><span class="w">    </span><span class="cm">/* Offset within bar. */</span>
-<span class="w">        </span><span class="nx">le32</span><span class="w"> </span><span class="nx">length</span><span class="p">;</span><span class="w">    </span><span class="cm">/* Length of the structure, in bytes. */</span>
+<div class="highlight"><pre><span></span><code><span class="nx">struct</span><span class="w"> </span><span class="nx">virtio_pci_cap</span><span class="w"> </span><span class="p">{</span><span class="w"> </span>
+<span class="w">        </span><span class="kt">u8</span><span class="w"> </span><span class="nx">cap_vndr</span><span class="p">;</span><span class="w">    </span><span class="cm">/* Generic PCI field: PCI_CAP_ID_VNDR */</span><span class="w"> </span>
+<span class="w">        </span><span class="kt">u8</span><span class="w"> </span><span class="nx">cap_next</span><span class="p">;</span><span class="w">    </span><span class="cm">/* Generic PCI field: next ptr. */</span><span class="w"> </span>
+<span class="w">        </span><span class="kt">u8</span><span class="w"> </span><span class="nx">cap_len</span><span class="p">;</span><span class="w">     </span><span class="cm">/* Generic PCI field: capability length */</span><span class="w"> </span>
+<span class="w">        </span><span class="kt">u8</span><span class="w"> </span><span class="nx">cfg_type</span><span class="p">;</span><span class="w">    </span><span class="cm">/* Identifies the structure. */</span><span class="w"> </span>
+<span class="w">        </span><span class="kt">u8</span><span class="w"> </span><span class="nx">bar</span><span class="p">;</span><span class="w">         </span><span class="cm">/* Where to find it. */</span><span class="w"> </span>
+<span class="w">        </span><span class="kt">u8</span><span class="w"> </span><span class="nx">padding</span><span class="p">[</span><span class="mi">3</span><span class="p">];</span><span class="w">  </span><span class="cm">/* Pad to full dword. */</span><span class="w"> </span>
+<span class="w">        </span><span class="nx">le32</span><span class="w"> </span><span class="nx">offset</span><span class="p">;</span><span class="w">    </span><span class="cm">/* Offset within bar. */</span><span class="w"> </span>
+<span class="w">        </span><span class="nx">le32</span><span class="w"> </span><span class="nx">length</span><span class="p">;</span><span class="w">    </span><span class="cm">/* Length of the structure, in bytes. */</span><span class="w"> </span>
 <span class="p">};</span>
 </code></pre></div>
 
@@ -310,20 +310,20 @@ idx表示下次前端驱动要放置<code>Descriptor Entry</code>的地方。</p
 <span class="cm">/* The Host publishes the avail index for which it expects a kick</span>
 <span class="cm"> * at the end of the used ring. Guest should ignore the used-&gt;flags field. */</span>
 
-<span class="k">struct</span><span class="w"> </span><span class="nc">virtq_used</span><span class="w"> </span><span class="p">{</span>
-<span class="cp">#define VIRTQ_USED_F_NO_NOTIFY  1</span>
-<span class="w">        </span><span class="n">le16</span><span class="w"> </span><span class="n">flags</span><span class="p">;</span>
-<span class="w">        </span><span class="n">le16</span><span class="w"> </span><span class="n">idx</span><span class="p">;</span>
-<span class="w">        </span><span class="k">struct</span><span class="w"> </span><span class="nc">virtq_used_elem</span><span class="w"> </span><span class="n">ring</span><span class="p">[</span><span class="w"> </span><span class="cm">/* Queue Size */</span><span class="p">];</span>
-<span class="w">        </span><span class="n">le16</span><span class="w"> </span><span class="n">avail_event</span><span class="p">;</span><span class="w"> </span><span class="cm">/* Only if VIRTIO_F_EVENT_IDX */</span>
-<span class="p">};</span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">virtq_used</span><span class="w"> </span><span class="p">{</span><span class="w"> </span>
+<span class="cp">#define VIRTQ_USED_F_NO_NOTIFY  1 </span>
+<span class="w">        </span><span class="n">le16</span><span class="w"> </span><span class="n">flags</span><span class="p">;</span><span class="w"> </span>
+<span class="w">        </span><span class="n">le16</span><span class="w"> </span><span class="n">idx</span><span class="p">;</span><span class="w"> </span>
+<span class="w">        </span><span class="k">struct</span><span class="w"> </span><span class="nc">virtq_used_elem</span><span class="w"> </span><span class="n">ring</span><span class="p">[</span><span class="w"> </span><span class="cm">/* Queue Size */</span><span class="p">];</span><span class="w"> </span>
+<span class="w">        </span><span class="n">le16</span><span class="w"> </span><span class="n">avail_event</span><span class="p">;</span><span class="w"> </span><span class="cm">/* Only if VIRTIO_F_EVENT_IDX */</span><span class="w"> </span>
+<span class="p">};</span><span class="w"> </span>
 
-<span class="cm">/* le32 is used here for ids for padding reasons. */</span>
-<span class="k">struct</span><span class="w"> </span><span class="nc">virtq_used_elem</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="cm">/* Index of start of used descriptor chain. */</span>
-<span class="w">        </span><span class="n">le32</span><span class="w"> </span><span class="n">id</span><span class="p">;</span>
-<span class="w">        </span><span class="cm">/* Total length of the descriptor chain which was used (written to) */</span>
-<span class="w">        </span><span class="n">le32</span><span class="w"> </span><span class="n">len</span><span class="p">;</span>
+<span class="cm">/* le32 is used here for ids for padding reasons. */</span><span class="w"> </span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">virtq_used_elem</span><span class="w"> </span><span class="p">{</span><span class="w"> </span>
+<span class="w">        </span><span class="cm">/* Index of start of used descriptor chain. */</span><span class="w"> </span>
+<span class="w">        </span><span class="n">le32</span><span class="w"> </span><span class="n">id</span><span class="p">;</span><span class="w"> </span>
+<span class="w">        </span><span class="cm">/* Total length of the descriptor chain which was used (written to) */</span><span class="w"> </span>
+<span class="w">        </span><span class="n">le32</span><span class="w"> </span><span class="n">len</span><span class="p">;</span><span class="w"> </span>
 <span class="p">};</span>
 </code></pre></div>
 
@@ -360,15 +360,15 @@ Virtio前后端通信概括起来只有两个方向，即GuestOS通知QEMU和QEM
 检测到ioeventfd事件后调用callback进行处理。</p>
 <div class="highlight"><pre><span></span><code><span class="n">前端驱动通知后端</span><span class="err">：</span>
 <span class="n">内核流程mark一下</span><span class="err">，</span><span class="n">PCI设备驱动流程这个后面可以学习一下</span><span class="err">，</span><span class="n">先扫描PCI</span><span class="w"> </span><span class="n">bus发现是virtio设备再扫描virtio</span><span class="o">-</span><span class="n">bus</span><span class="err">。</span>
-<span class="n">worker_thread</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">process_one_work</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">pciehp_power_thread</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">pciehp_enable_slot</span><span class="w"> </span><span class="o">--&gt;</span>
-<span class="n">pciehp_configure_device</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">pci_bus_add_devices</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">pci_bus_add_device</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">device_attach</span><span class="w"> </span><span class="o">--&gt;</span>
-<span class="n">__device_attach</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">bus_for_each_drv</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">__device_attach_driver</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">driver_probe_device</span><span class="w"> </span><span class="o">--&gt;</span>
-<span class="n">pci_device_probe</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">local_pci_probe</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">virtio_pci_probe</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">register_virtio_device</span><span class="w"> </span><span class="o">--&gt;</span>
-<span class="n">device_register</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">device_add</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">bus_probe_device</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">device_initial_probe</span>
+<span class="n">worker_thread</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">process_one_work</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">pciehp_power_thread</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">pciehp_enable_slot</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span>
+<span class="n">pciehp_configure_device</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">pci_bus_add_devices</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">pci_bus_add_device</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">device_attach</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span>
+<span class="n">__device_attach</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">bus_for_each_drv</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">__device_attach_driver</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">driver_probe_device</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span>
+<span class="n">pci_device_probe</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">local_pci_probe</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">virtio_pci_probe</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">register_virtio_device</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span>
+<span class="n">device_register</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">device_add</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">bus_probe_device</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">device_initial_probe</span><span class="w"> </span>
 <span class="o">--&gt;</span><span class="w"> </span><span class="n">__device_attach</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">bus_for_each_drv</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">__device_attach_driver</span><span class="w"> </span><span class="o">--&gt;</span>
 <span class="n">driver_probe_device</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">virtio_dev_probe</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">virtnet_probe</span><span class="w"> </span><span class="p">(</span><span class="n">网卡设备驱动加载的入口</span><span class="p">)</span>
 
-<span class="k">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">virtnet_probe</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">virtio_device</span><span class="w"> </span><span class="o">*</span><span class="n">vdev</span><span class="p">)</span>
+<span class="k">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">virtnet_probe</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">virtio_device</span><span class="w"> </span><span class="o">*</span><span class="n">vdev</span><span class="p">)</span><span class="w"> </span>
 <span class="p">{</span>
 <span class="w">    </span><span class="p">......</span>
 <span class="w">    </span><span class="n">virtio_device_ready</span><span class="p">(</span><span class="n">vdev</span><span class="p">);</span>
@@ -464,13 +464,13 @@ Virtio前后端通信概括起来只有两个方向，即GuestOS通知QEMU和QEM
 <span class="w">      </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">virtio_net_vhost_status</span>
 <span class="w">        </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">vhost_net_start</span>
 <span class="w">          </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">virtio_pci_set_guest_notifiers</span>
-<span class="w">            </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">kvm_virtio_pci_vector_use</span>
+<span class="w">            </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">kvm_virtio_pci_vector_use</span><span class="w"> </span>
 <span class="w">              </span><span class="o">|--&gt;</span><span class="w"> </span><span class="n">kvm_irqchip_add_msi_route</span><span class="w"> </span><span class="c1">//更新中断路由表</span>
 <span class="w">              </span><span class="o">|--&gt;</span><span class="w"> </span><span class="n">kvm_virtio_pci_irqfd_use</span><span class="w">  </span><span class="c1">//使能MSI中断</span>
 <span class="w">                 </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">kvm_irqchip_add_irqfd_notifier_gsi</span>
 <span class="w">                   </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">kvm_irqchip_assign_irqfd</span>
 
-<span class="cp"># 申请MSIx中断的时候，会为MSIx分配一个gsi，并为这个gsi绑定一个irqfd，然后调用ioctl KVM_IRQFD注册到内核中。</span>
+<span class="cp"># 申请MSIx中断的时候，会为MSIx分配一个gsi，并为这个gsi绑定一个irqfd，然后调用ioctl KVM_IRQFD注册到内核中。               </span>
 <span class="k">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">kvm_irqchip_assign_irqfd</span><span class="p">(</span><span class="n">KVMState</span><span class="w"> </span><span class="o">*</span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">fd</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">rfd</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">virq</span><span class="p">,</span>
 <span class="w">                                    </span><span class="kt">bool</span><span class="w"> </span><span class="n">assign</span><span class="p">)</span>
 <span class="p">{</span>
@@ -584,9 +584,9 @@ For virtio-net + vhost + INTx we need the one in virtio_queue_guest_notifier_rea
 <p>QEM模拟PCI设备对GuestOS进行呈现，设备驱动加载的时候尝试去初始化设备。</p>
 <div class="highlight"><pre><span></span><code><span class="cp"># 先在PCI总线上调用probe设备，调用了virtio_pci_probe，然后再virtio-bus上调用virtio_dev_probe</span>
 <span class="cp"># virtio_dev_probe最后调用到virtnet_probe</span>
-<span class="n">pci_device_probe</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">local_pci_probe</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">virtio_pci_probe</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">register_virtio_device</span><span class="w"> </span><span class="o">--&gt;</span>
-<span class="n">device_register</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">device_add</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">bus_probe_device</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">device_initial_probe</span>
-<span class="o">--&gt;</span><span class="w"> </span><span class="n">__device_attach</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">bus_for_each_drv</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">__device_attach_driver</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">driver_probe_device</span><span class="w"> </span><span class="o">--&gt;</span>
+<span class="n">pci_device_probe</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">local_pci_probe</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">virtio_pci_probe</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">register_virtio_device</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span>
+<span class="n">device_register</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">device_add</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">bus_probe_device</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">device_initial_probe</span><span class="w"> </span>
+<span class="o">--&gt;</span><span class="w"> </span><span class="n">__device_attach</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">bus_for_each_drv</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">__device_attach_driver</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">driver_probe_device</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span>
 <span class="n">virtio_dev_probe</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">virtnet_probe</span>
 
 <span class="cp"># 在virtio_pci_probe里先尝试以virtio modern方式读取设备配置数据结构，如果失败则尝试virio legacy方式。</span>
@@ -626,12 +626,12 @@ For virtio-net + vhost + INTx we need the one in virtio_queue_guest_notifier_rea
 <span class="w">                                        </span><span class="k">sizeof</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">virtio_pci_common_cfg</span><span class="p">),</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span>
 <span class="w">                                        </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">virtio_pci_common_cfg</span><span class="p">),</span>
 <span class="w">                                        </span><span class="nb">NULL</span><span class="p">);</span>
-<span class="w">        </span><span class="c1">// 将配virtio置结构所在的BAR空间MAP到内核地址空间里</span>
+<span class="w">        </span><span class="c1">// 将配virtio置结构所在的BAR空间MAP到内核地址空间里                                </span>
 <span class="w">        </span><span class="n">vp_dev</span><span class="o">-&gt;</span><span class="n">common</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">map_capability</span><span class="p">(</span><span class="n">pci_dev</span><span class="p">,</span><span class="w"> </span><span class="n">common</span><span class="p">,</span>
 <span class="w">                                        </span><span class="k">sizeof</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">virtio_pci_common_cfg</span><span class="p">),</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span>
 <span class="w">                                        </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">virtio_pci_common_cfg</span><span class="p">),</span>
 <span class="w">                                        </span><span class="nb">NULL</span><span class="p">);</span>
-<span class="w">        </span><span class="p">......</span>
+<span class="w">        </span><span class="p">......</span><span class="w">                              </span>
 <span class="p">}</span>
 
 <span class="cp"># 接着来到virtio_dev_probe里面看下：</span>
@@ -688,15 +688,20 @@ virtqueue队列的中断服务程序是 <code>vp_vring_interrupt</code>。</p>
 <span class="w">        </span><span class="k">const</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="o">*</span><span class="n">ctx</span><span class="p">,</span>
 <span class="w">        </span><span class="k">struct</span><span class="w"> </span><span class="nc">irq_affinity</span><span class="w"> </span><span class="o">*</span><span class="n">desc</span><span class="p">)</span>
 <span class="p">{</span>
-<span class="w">        </span><span class="cm">/* 为configuration change申请MSIx中断 */</span>
-<span class="w">    </span><span class="n">err</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">vp_request_msix_vectors</span><span class="p">(</span><span class="n">vdev</span><span class="p">,</span><span class="w"> </span><span class="n">nvectors</span><span class="p">,</span><span class="w"> </span><span class="n">per_vq_vectors</span><span class="p">,</span>
+
+
+<span class="w">        </span><span class="c1">// 为每个vq分配一个MSIx中断号， per_vq_vectors = true</span>
+<span class="w">        </span><span class="c1">// 同时为configuration change申请单独一个MSIx中断，一并设置了cfg的中断处理函数</span>
+<span class="w">        </span><span class="n">err</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">vp_request_msix_vectors</span><span class="p">(</span><span class="n">vdev</span><span class="p">,</span><span class="w"> </span><span class="n">nvectors</span><span class="p">,</span><span class="w"> </span><span class="n">per_vq_vectors</span><span class="p">,</span>
 <span class="w">                  </span><span class="n">per_vq_vectors</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">desc</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span>
+
 <span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">nvqs</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">         </span><span class="c1">// 创建队列 --&gt; vring_create_virtqueue --&gt; vring_create_virtqueue_split --&gt; vring_alloc_queue</span>
-<span class="w">             </span><span class="n">vqs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">vp_setup_vq</span><span class="p">(</span><span class="n">vdev</span><span class="p">,</span><span class="w"> </span><span class="n">queue_idx</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">callbacks</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="w"> </span><span class="n">names</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+<span class="w">                </span><span class="c1">// 创建队列 --&gt; vring_create_virtqueue --&gt; vring_create_virtqueue_split --&gt; vring_alloc_queue</span>
+<span class="w">                </span><span class="n">vqs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">vp_setup_vq</span><span class="p">(</span><span class="n">vdev</span><span class="p">,</span><span class="w"> </span><span class="n">queue_idx</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">callbacks</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="w"> </span><span class="n">names</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
 <span class="w">                                </span><span class="n">ctx</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">ctx</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nb">false</span><span class="p">,</span>
 <span class="w">                                </span><span class="n">msix_vec</span><span class="p">);</span>
-<span class="w">        </span><span class="c1">// 每个队列申请一个MSIx中断</span>
+
+<span class="w">                </span><span class="c1">// 每个队列设置对应的MSIx中断处理函数</span>
 <span class="w">                </span><span class="n">err</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">request_irq</span><span class="p">(</span><span class="n">pci_irq_vector</span><span class="p">(</span><span class="n">vp_dev</span><span class="o">-&gt;</span><span class="n">pci_dev</span><span class="p">,</span><span class="w"> </span><span class="n">msix_vec</span><span class="p">),</span>
 <span class="w">                                  </span><span class="n">vring_interrupt</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
 <span class="w">                                  </span><span class="n">vp_dev</span><span class="o">-&gt;</span><span class="n">msix_names</span><span class="p">[</span><span class="n">msix_vec</span><span class="p">],</span>
@@ -770,7 +775,7 @@ virtqueue队列的中断服务程序是 <code>vp_vring_interrupt</code>。</p>
 <p>OK，这个小节就到这里。Are you clear ?</p>
 <h3>3.2 virtio-net网卡收发在virtqueue上的实现</h3>
 <p>这里以virtio-net为例（非vhost-net模式）来分析一下网卡收发报文在virtio协议上的具体实现。
-virtio-net模式下网卡收发包的流程为：</p>
+virtio-net模式下网卡收发包的流程为： </p>
 <ul>
 <li>收包：Hardware =&gt; Host Kernel =&gt; Qemu =&gt; Guest</li>
 <li>发包：Guest =&gt; Host Kernel =&gt; Qemu =&gt; Host Kernel =&gt; Hardware</li>
@@ -801,7 +806,7 @@ virtio-net模式下网卡收发包的流程为：</p>
 <span class="w">    </span><span class="c1">// 将skb放到virtqueue队列中</span>
 <span class="w">    </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">xmit_skb</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">sg_init_table</span><span class="p">,</span><span class="n">virtqueue_add_outbuf</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">virtqueue_add</span>
 <span class="w">    </span><span class="c1">// kick通知qemu后端去取</span>
-<span class="w">    </span><span class="n">virtqueue_kick_prepare</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">virtqueue_notify</span>
+<span class="w">    </span><span class="n">virtqueue_kick_prepare</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">virtqueue_notify</span><span class="w"> </span>
 <span class="w">    </span><span class="c1">// kick次数加1</span>
 <span class="w">    </span><span class="n">sq</span><span class="o">-&gt;</span><span class="n">stats</span><span class="p">.</span><span class="n">kicks</span><span class="o">++</span>
 </code></pre></div>
@@ -851,9 +856,9 @@ Qemu主循环收到POLL_IN事件调用回调函数收包。</p>
  
                 <p id="post-share-links">
     Share on:
-      <a href="https://twitter.com/intent/tweet?text=Virtio%E5%8D%8F%E8%AE%AE%E6%A6%82%E8%BF%B0&url=https%3A//blog.kernel.love/virtio-overview.html&hashtags=virtualization,virtio,virtio-net,virtio-scsi,virtio-blk,virtqueue" target="_blank" rel="nofollow noopener noreferrer" title="Share on Twitter">Twitter</a>
+      <a href="https://twitter.com/intent/tweet?text=Virtio%20Spec%20Overview&url=https%3A//blog.kernel.love/virtio-overview.html&hashtags=virtualization,virtio,virtio-net,virtio-scsi,virtio-blk,virtqueue" target="_blank" rel="nofollow noopener noreferrer" title="Share on Twitter">Twitter</a>
  ❄       <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A//blog.kernel.love/virtio-overview.html" target="_blank" rel="nofollow noopener noreferrer" title="Share on Facebook">Facebook</a>
- ❄       <a href="mailto:?subject=Virtio%E5%8D%8F%E8%AE%AE%E6%A6%82%E8%BF%B0&amp;body=https%3A//blog.kernel.love/virtio-overview.html" target="_blank" rel="nofollow noopener noreferrer" title="Share via Email">Email</a>
+ ❄       <a href="mailto:?subject=Virtio%20Spec%20Overview&amp;body=https%3A//blog.kernel.love/virtio-overview.html" target="_blank" rel="nofollow noopener noreferrer" title="Share via Email">Email</a>
 
             
             
@@ -868,11 +873,11 @@ Qemu主循环收到POLL_IN事件调用回调函数收包。</p>
 <section>
     <h2>Related Posts</h2>
 <ul class="related-posts-list">
-<li><a href="https://blog.kernel.love/vfio-insight.html" title="VFIO关键技术点分析">VFIO关键技术点分析</a></li>
 <li><a href="https://blog.kernel.love/vtd_interrupt_remapping_code_analysis.html" title="VT-d Interrupt Remapping代码分析">VT-d Interrupt Remapping代码分析</a></li>
 <li><a href="https://blog.kernel.love/vtd-posted-interrupt-code-analysis.html" title="VT-d Interrupt Posting代码分析">VT-d Interrupt Posting代码分析</a></li>
 <li><a href="https://blog.kernel.love/x86-nmi.html" title="Virt NMI Emulation">Virt NMI Emulation</a></li>
 <li><a href="https://blog.kernel.love/microVM.html" title="轻量级虚拟化技术">轻量级虚拟化技术</a></li>
+<li><a href="https://blog.kernel.love/amd-x2avic.html" title="AMD x2avic details">AMD x2avic details</a></li>
 </ul>
 <hr />
 </section>
@@ -909,7 +914,7 @@ Qemu主循环收到POLL_IN事件调用回调函数收包。</p>
                     <span class="superscript">1</span>
 </a></li>
                 <li><a href="https://blog.kernel.love/tags.html#virtualization-ref">virtualization
-                    <span class="superscript">12</span>
+                    <span class="superscript">13</span>
 </a></li>
             </ul>
 <h4>Contact</h4>
