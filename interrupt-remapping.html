@@ -18,17 +18,17 @@
 
 <meta name="keywords" content="virtualization, virt, " />
 
-<meta property="og:title" content="VT-d Interrupt Remapping原理 "/>
+<meta property="og:title" content="VT-d Interrupt Remapping "/>
 <meta property="og:url" content="https://blog.kernel.love/interrupt-remapping.html" />
 <meta property="og:description" content="VT-d Interrupt Remapping" />
 <meta property="og:site_name" content="blog.kernel.love" />
 <meta property="og:article:author" content="Yori Fang" />
 <meta property="og:article:published_time" content="2017-09-22T23:00:00+08:00" />
 <meta property="og:article:modified_time" content="2017-09-22T23:00:00+08:00" />
-<meta name="twitter:title" content="VT-d Interrupt Remapping原理 ">
+<meta name="twitter:title" content="VT-d Interrupt Remapping ">
 <meta name="twitter:description" content="VT-d Interrupt Remapping">
 
-        <title>VT-d Interrupt Remapping原理  · blog.kernel.love
+        <title>VT-d Interrupt Remapping  · blog.kernel.love
 </title>
 
 <script>
@@ -79,7 +79,7 @@
     <header class="page-header span10 offset2">
         <h1>
             <a href="https://blog.kernel.love/interrupt-remapping.html">
-                VT-d Interrupt Remapping原理
+                VT-d Interrupt Remapping
             </a>
         </h1>
     </header>
@@ -154,7 +154,7 @@ Interrupt Remapping是需要硬件来支持的，这里的硬件应该主要是�
 <li>Present域(P)：0b表示此IRTE还没有被分配到任何的中断源，索引到此IRTE的Remapping中断将被blocked掉，1b表示此IRTE是有效的，已经被分配到某个设备。</li>
 <li>Destination Mode域(DM)：0b表示Destination ID域为Physical APIC-ID，1b表示Destination ID域是Logical APIC-ID。</li>
 <li>IRTE Mode域(IM)：0b表示此中断请求是一个Remapped Interrupt中断请求，1b表示此中断请求是一个Posted Interrupt中断请求。</li>
-<li>Vector域(V)：共8个Byte表示了此Remapped Interrupt中断请求的vector号(Remapped Interrupt)。</li>
+<li>Vector域(V)：共8个Byte表示了此Remapped Interrupt中断请求的vector号(Remapped Interrupt)，Vector号在Interrupt Remapping的时候是host vector在Interrupt Posting的时候是Guest vector。</li>
 <li>Destination ID域(DST)：表示此中断请求的目标CPU，根据当前Host中断方式不同具有不同的格式。xAPIC Mode (Cluster)为bit[40:47]， xAPIC Mode (Flat)和xAPIC Mode (Physical)为bit[47:40]， x2APIC Mode (Cluster)和x2APIC Mode (Physical)为bit[31:0]。</li>
 <li>SID, SQ, SVT则联合起来表示了中断请求的设备PCI/PCI-e request-id信息。</li>
 </ul>
@@ -164,9 +164,9 @@ Interrupt Remapping是需要硬件来支持的，这里的硬件应该主要是�
  
                 <p id="post-share-links">
     Share on:
-      <a href="https://twitter.com/intent/tweet?text=VT-d%20Interrupt%20Remapping%E5%8E%9F%E7%90%86&url=https%3A//blog.kernel.love/interrupt-remapping.html&hashtags=virtualization" target="_blank" rel="nofollow noopener noreferrer" title="Share on Twitter">Twitter</a>
+      <a href="https://twitter.com/intent/tweet?text=VT-d%20Interrupt%20Remapping&url=https%3A//blog.kernel.love/interrupt-remapping.html&hashtags=virtualization" target="_blank" rel="nofollow noopener noreferrer" title="Share on Twitter">Twitter</a>
  ❄       <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A//blog.kernel.love/interrupt-remapping.html" target="_blank" rel="nofollow noopener noreferrer" title="Share on Facebook">Facebook</a>
- ❄       <a href="mailto:?subject=VT-d%20Interrupt%20Remapping%E5%8E%9F%E7%90%86&amp;body=https%3A//blog.kernel.love/interrupt-remapping.html" target="_blank" rel="nofollow noopener noreferrer" title="Share via Email">Email</a>
+ ❄       <a href="mailto:?subject=VT-d%20Interrupt%20Remapping&amp;body=https%3A//blog.kernel.love/interrupt-remapping.html" target="_blank" rel="nofollow noopener noreferrer" title="Share via Email">Email</a>
 
             
             
